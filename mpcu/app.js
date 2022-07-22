@@ -93,7 +93,7 @@ app.get('/', (req, res) => {
            let m_0  = obj.employees[0].m;
            let hh0   = obj.employees[0].hh;
            let mm0   = obj.employees[0].mm;
-          console.log(hh1);
+         
           cron.schedule(`${mm0} ${hh0} ${dd_0} ${m_0} *`, function() {
 
             lineNotify.notify({
@@ -111,8 +111,6 @@ let dd_1   = obj.employees[1].dd;
 let m_1  = obj.employees[1].m;
 let hh1   = obj.employees[1].hh;
 let mm1   = obj.employees[1].mm;
-
-console.log(hh2)
 
 cron.schedule(`${mm1} ${hh1} ${dd_1} ${m_1} *`, function() {
 
@@ -206,6 +204,10 @@ cron.schedule(`${mm1} ${hh1} ${dd_1} ${m_1} *`, function() {
 
 })
 
+let dd_2   = obj.employees[2].dd;
+let m_2  = obj.employees[2].m;
+let hh2   = obj.employees[2].hh;
+let mm2   = obj.employees[2].mm;
 cron.schedule(`${mm2} ${hh2} ${dd_2} ${m_2} *`, function() {
   storage.connect('./information.json'); 
   let token = storage.state.token
