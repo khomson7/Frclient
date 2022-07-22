@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 192.168.3.21_3306
+Source Server         : 49.231.174.137_3306
 Source Server Version : 50505
-Source Host           : 192.168.3.21:3306
-Source Database       : hosxp_pcu03149
+Source Host           : 49.231.174.137:3306
+Source Database       : db_03164
 
 Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2022-06-08 04:55:20
+Date: 2022-07-22 20:28:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `opd_allergy_10918` (
   `symptom` varchar(250) DEFAULT NULL,
   `reporter` varchar(250) DEFAULT NULL,
   `relation_level` varchar(50) DEFAULT NULL,
-  `note` text,
+  `note` text DEFAULT NULL,
   `allergy_type` char(1) DEFAULT NULL,
   `display_order` varchar(11) DEFAULT '',
   `begin_date` date DEFAULT NULL,
@@ -60,9 +60,9 @@ CREATE TABLE `opd_allergy_10918` (
   `opd_allergy_source_id` varchar(11) DEFAULT '',
   `opd_allergy_type_id` varchar(11) DEFAULT '',
   `doctor_code` varchar(15) DEFAULT NULL,
-  `dosage_text` text,
-  `usage_text` text,
-  `lab_text` text,
+  `dosage_text` text DEFAULT NULL,
+  `usage_text` text DEFAULT NULL,
+  `lab_text` text DEFAULT NULL,
   `sct_disorder_id` varchar(18) DEFAULT NULL,
   `sct_substance_id` varchar(18) DEFAULT NULL,
   UNIQUE KEY `idx` (`hn`,`report_date`,`agent`,`symptom`,`begin_date`,`entry_datetime`,`update_datetime`) USING BTREE

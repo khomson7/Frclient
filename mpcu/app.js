@@ -276,9 +276,6 @@ cron.schedule(`${mm2} ${hh2} ${dd_2} ${m_2} *`, function() {
         });
         
       }
-
-     
-
       const mess = 'sdrugimport';
     //  res.send({ok: mess});
       lineNotify.notify({
@@ -290,15 +287,11 @@ cron.schedule(`${mm2} ${hh2} ${dd_2} ${m_2} *`, function() {
       console.log({ok: 'post to local'})
   
     })
-
-
     .catch(function (error) {
       console.log(error);
     });
 
     })
-
-
     let dd_3   = obj.employees[3].dd;
     let m_3  = obj.employees[3].m;
     let hh3   = obj.employees[3].hh;
