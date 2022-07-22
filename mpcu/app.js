@@ -375,6 +375,91 @@ cron.schedule(`${mm2} ${hh2} ${dd_2} ${m_2} *`, function() {
        // res.send({ok: true});
     
       });
+
+//opdallergy
+    let dd_4   = obj.employees[4].dd;
+    let m_4  = obj.employees[4].m;
+    let hh4   = obj.employees[4].hh;
+    let mm4  = obj.employees[4].mm;
+
+    cron.schedule(`${mm4} ${hh4} ${dd_4} ${m_4} *`, function() {
+
+      storage.connect('./information.json'); 
+      let token = storage.state.token
+      const obj0 = JSON.parse(token);
+      const token2 = 'Bearer '+obj0.token;
+      var data = '';
+      const url = process.env.LOCAL_URL+'/persons/opdallergy';
+    
+        var config0 = {
+          method: 'delete',
+          url: `${local_url}/persons/opdallergy/${day_1}/${day_2}`,
+          headers: { 
+              'Authorization': token2
+          }
+        };
+        
+        axios(config0)
+        .then(function (response) {
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      
+      var config = {
+          method: 'get',
+          url: `${main_url}/persons/opdallergy/${day_1}/${day_2}`,
+          headers: { 
+            'Authorization': token2
+          },
+          data : data
+        };
+        
+        axios(config)
+      
+        .then(function (response) {
+          
+      console.log({ok: 'get from maain_service'}) 
+          for (var i in response.data) {
+           const options = {
+              method: 'POST',
+              headers: { 'content-type': 'application/x-www-form-urlencoded' ,
+           'Authorization': token2 
+            
+            },
+              data: qs.stringify(response.data[i]),
+              url,
+          //  timeout: 10000,
+            };
+      
+            axios(options)
+            .then(function (response) {    
+              
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+            
+          }
+    
+          const mess = 'opdallergy';
+          res.send({ok: mess});
+          lineNotify.notify({
+            message: mess,
+          }).then(() => {
+            console.log(mess+' complete!'); 
+          });
+          
+          console.log({ok: 'post to local'})
+      
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+    })
+
+
       res.send({ok: true});
     })
 
