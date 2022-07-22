@@ -1,0 +1,36 @@
+BEGIN
+
+REPLACE INTO opd_allergy(hn,report_date,agent,symptom,reporter,note
+,allergy_group_id,seriousness_id,allergy_result_id,allergy_relation_id,entry_datetime,update_datetime,force_no_order
+,opd_allergy_alert_type_id,patient_cid,opd_allergy_report_type_id,opd_allergy_source_id)
+
+select pt.hn,a.report_date,a.agent,concat(a.symptom,' ',a.note) as symptom ,a.reporter,a.note
+
+,if(a.allergy_group_id in('1','2','3','4','5','6','7','8','9'),a.allergy_group_id,null) as allergy_group_id
+,if(a.seriousness_id in('1','2','3','4','5','6','7','8','9'),a.seriousness_id,null) as seriousness_id
+,if(a.allergy_result_id in('1','2','3','4','5','6','7','8','9'),a.allergy_result_id,null) as allergy_result_id
+,if(a.allergy_relation_id in('1','2','3','4','5','6','7','8','9'),a.allergy_relation_id,null) as allergy_relation_id
+,a.entry_datetime,a.update_datetime,if(a.force_no_order = '',null,a.force_no_order) as force_no_order
+,if(a.opd_allergy_alert_type_id in('1','2','3','4','5','6','7','8','9'),a.opd_allergy_alert_type_id,null) as opd_allergy_alert_type_id ,pt.cid
+,if(a.opd_allergy_report_type_id in('1','2','3','4','5','6','7','8','9'),a.opd_allergy_report_type_id,null) as opd_allergy_report_type_id
+,if(a.opd_allergy_source_id in('1','2','3','4','5','6','7','8','9'),a.opd_allergy_source_id,null) as opd_allergy_source_id
+from opd_allergy_10918 a
+INNER JOIN patient pt on MD5(concat(pt.cid,3200)) = CONVERT(a.patient_cid USING utf8)
+WHERE a.patient_cid is not null or a.patient_cid not in('') and concat(pt.hn,a.agent) not in(select concat(hn,agent) FROM opd_allergy);
+
+INSERT INTO drugstdgeneric(genericname)
+select agent FROM opd_allergy
+WHERE agent NOT IN
+(select genericname from drugstdgeneric)
+GROUP BY agent;
+
+update patient pt
+INNER JOIN
+(select hn,GROUP_CONCAT("'",agent,"'") as drugallergy
+from opd_allergy o
+GROUP BY o.hn)t on t.hn = pt.hn
+SET pt.drugallergy = t.drugallergy 
+WHERE (pt.drugallergy is null or pt.drugallergy = '');
+
+
+END
