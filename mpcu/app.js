@@ -554,6 +554,78 @@ cron.schedule(`${mm2} ${hh2} ${dd_2} ${m_2} *`, function() {
   })
 
  
+  app.get('/covac', (req, res) => { 
+
+    storage.connect('./information.json'); 
+    let token = storage.state.token
+    const obj0 = JSON.parse(token);
+    const token2 = 'Bearer '+obj0.token;
+    var data = '';
+    
+    const url = process.env.MAIN_URL+'/covs/covac';
+    var config = {
+        method: 'get',
+        url: `${local_url}/covs/covac`,
+        headers: { 
+          'Authorization': token2
+        },
+        data : data
+      };
+      
+      axios(config)
+    
+      .then(function (response) {
+        
+    console.log({ok: 'get from main_service'})
+  
+        for (var i in response.data) {
+    
+         const options = {
+            method: 'POST',
+            headers: { 'content-type': 'application/x-www-form-urlencoded' ,
+         'Authorization': token2 
+          
+          },
+            data: qs.stringify(response.data[i]),
+            url,
+         timeout: 100000,
+          };
+    
+          axios(options)
+          .then(function (response) {    
+            
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+          
+        }
+  
+        var config2 = {
+          method: 'get',
+          url: `${local_url}/covs/chksend`,
+          headers: { 
+           // 'Authorization': token2
+          },
+         // data : data
+        };
+        
+        axios(config2)
+        lineNotify.notify({
+          message: 'CovacSend',
+        }).then(() => {
+          console.log('send completed!'); 
+        });
+  
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  })
+
+
+
 
 //sdrug
 
