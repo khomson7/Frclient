@@ -537,7 +537,52 @@ cron.schedule(`${mm2} ${hh2} ${dd_2} ${m_2} *`, function() {
 
   })
 
- 
+  //vaclabel
+  app.get('/vaclabel', (req, res) => { 
+  storage.connect('./information.json'); 
+  let token = storage.state.token
+  const obj0 = JSON.parse(token);
+  const token2 = 'Bearer '+obj0.token;
+  var data = '';
+
+  var config = {
+    method: 'get',
+    url: `${main_url}/covs/vaclabel/FW0201`,
+    headers: { 
+      'Authorization': token2
+    },
+    data : data
+  };
+
+  axios(config)
+  
+
+  .then(function (response) {
+    const text = '{"employees":'+ JSON.stringify(response.data) +'}';
+   // console.log(qs.stringify(response.data));
+   /*
+   const obj = { foo: 'bar', baz: 42 };
+   Object.entries(obj).forEach(([key, value]) => 
+   console.log(`${key}: ${value}`));*/
+
+    //const obj = { "a": "fsbski", b: 7, c: 9 };
+    const obj = response.data;
+    Object.entries(obj).forEach(([key, value]) => 
+    console.log(`${key}: ${value}`));
+/*
+   const obj = JSON.parse(response);
+for (const [key, value] of Object.entries(obj)) {
+  console.log(`${value}`);
+}
+*/
+  })
+  .catch(function (error) {
+    console.log(error);
+   })
+res.send({ok:true})
+  })
+
+
 
   app.get('/drug', (req, res) => { 
 
